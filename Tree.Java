@@ -24,6 +24,16 @@ public class Tree {
 
         this.rnd = rnd;
     }
+
+    /**
+     * Method to Image
+     * @return Image
+     */
+    public Image toImage(){
+        Image img = new Image(this.width, this.height);
+        drawImage(this, img);
+        return img;
+    }
     
     /**
      * Method chooseColor
@@ -87,6 +97,7 @@ public class Tree {
      */
     public static Tree chooseLeaf(Tree a){
         if(a.left == null && a.right == null){
+            //Case it's a leaf
             return a;
         }else{
             Tree childLeft = chooseLeaf(a.left);
@@ -106,6 +117,23 @@ public class Tree {
      */
     public static double weight(Tree a){
         return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
+    }
+
+    /**
+     * Draw Image recursively
+     * ** The line are not drawn
+     * @param a
+     * @param img
+     */
+    public static void drawImage(Tree a, Image img){
+        if(a.left == null && a.right == null){
+            //Case it's a leaf
+            img.setRectangle(a.coord.getx(), a.coord.getx()+a.width, a.coord.gety(), a.coord.gety()+a.height, a.color);
+        }else{
+            drawImage(a.left, img);
+            // ** here depends the division
+            drawImage(a.right, img);
+        }
     }
 
 }
