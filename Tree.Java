@@ -114,7 +114,7 @@ public class Tree {
             int s = this.width;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
-            int rndX = (int)(this.rnd.nextDouble()*(this.coord.getx()+intervalMax-intervalMin))+(this.coord.getx()+intervalMin);
+            int rndX = (int)(this.rnd.nextDouble()*(intervalMax-intervalMin))+intervalMin+this.coord.getx();
             Point coord = new Point(rndX,this.coord.gety());
             return new Pair<Point, Boolean>(coord, true);
         }else{
@@ -122,7 +122,7 @@ public class Tree {
             int s = this.height;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
-            int rndY = (int)(rnd.nextDouble()*(this.coord.gety()+intervalMax-intervalMin))+(this.coord.gety()+intervalMin);
+            int rndY = (int)(rnd.nextDouble()*(intervalMax-intervalMin))+intervalMin+this.coord.gety();
             Point coord = new Point(this.coord.getx(), rndY);
             return new Pair<Point, Boolean>(coord, false);
         }

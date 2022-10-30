@@ -4,7 +4,7 @@ class Main {
      * @param args
      */
     public static void main(String[] args) {
-        Tree a = Tree.generateRandomtree(4, 0.50, 5, 0.01, 2, new Random(), 1000, 1000);
+        Tree a = Tree.generateRandomtree(10000, 0.50, 5, 0.01, 2, new Random(), 1000, 1000);
         Image img=a.toImage();
         
         try {
