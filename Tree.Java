@@ -73,7 +73,6 @@ public class Tree {
      * @return
      */
     public void chooseColor(Color parentColor, double proba){
-        System.out.println(this.rnd.nextDouble()+ "<"+ proba);
         if(this.rnd.nextDouble() < proba){
             this.color = parentColor;
         }else{
@@ -115,7 +114,7 @@ public class Tree {
             int s = this.width;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
-            int rndX = (int)(this.rnd.nextDouble()*(this.coord.getx()+intervalMax))+(this.coord.getx()+intervalMin);
+            int rndX = (int)(this.rnd.nextDouble()*(this.coord.getx()+intervalMax-intervalMin))+(this.coord.getx()+intervalMin);
             Point coord = new Point(rndX,this.coord.gety());
             return new Pair<Point, Boolean>(coord, true);
         }else{
@@ -123,7 +122,7 @@ public class Tree {
             int s = this.height;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
-            int rndY = (int)(rnd.nextDouble()*(this.coord.gety()+intervalMax))+(this.coord.gety()+intervalMin);
+            int rndY = (int)(rnd.nextDouble()*(this.coord.gety()+intervalMax-intervalMin))+(this.coord.gety()+intervalMin);
             Point coord = new Point(this.coord.getx(), rndY);
             return new Pair<Point, Boolean>(coord, false);
         }
