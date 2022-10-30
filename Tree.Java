@@ -62,6 +62,7 @@ public class Tree {
      */
     public Image toImage(){
         Image img = new Image(this.width, this.height);
+        img.setRectangle(0, width, 0, height, Color.gray);
         drawImage(this, img);
         return img;
     }
@@ -114,16 +115,20 @@ public class Tree {
             int s = this.width;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
+            //Generate random pos in interval
             int rndX = (int)(this.rnd.nextDouble()*(intervalMax-intervalMin))+intervalMin+this.coord.getx();
             Point coord = new Point(rndX,this.coord.gety());
+
             return new Pair<Point, Boolean>(coord, true);
         }else{
             //Division Y axis
             int s = this.height;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
             int intervalMax = (int)Math.max(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
+            //Generate random pos in interval
             int rndY = (int)(rnd.nextDouble()*(intervalMax-intervalMin))+intervalMin+this.coord.gety();
             Point coord = new Point(this.coord.getx(), rndY);
+
             return new Pair<Point, Boolean>(coord, false);
         }
     }
@@ -159,30 +164,46 @@ public class Tree {
 
     public static Tree generateRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
         Tree a = new Tree(width, height, rnd);
-        int leaves = 0;
+        int leaves = 1;
         boolean isPossible = true;
 
         while(isPossible && leaves < nbLeaves){
             Tree leaf = chooseLeaf(a);
-            if(leaf.width >= minDimensionCut || leaf.height >= minDimensionCut){
+            if(isDivisionPossible(leaf, minDimensionCut)){
                 Pair<Point, Boolean> division = leaf.chooseDivision(proportionCut);
-                System.out.println("division :" + division.first().getx()+":"+division.first().gety());
-                if(division.second())System.out.println("division en X");else System.out.println("division en Y");
                 leaf.setDivisionAxis(division.second());
+
+                Point leftCoord;
+                Point rightCoord;
+                int leftWidth;
+                int rightWidth;
+                int leftHeight;
+                int rightHeight;
+
                 if(division.second()){
-                    //Case X division //Arrondir line div 2 en dessous pour left et inverse pour right
-                    leaf.left = new Tree(leaf.coord, (division.first().getx() - leaf.coord.getx() - (widthLine/2)), leaf.height, rnd);
-                    leaf.right = new Tree(new Point(division.first().getx()+(widthLine/2), division.first().gety()), (leaf.coord.getx()+leaf.width - division.first().getx() - (widthLine/2)), leaf.height, rnd);
-                    System.out.println(leaf.left.coord.getx()+":"+leaf.left.coord.gety());
-                    System.out.println(leaf.right.coord.getx()+":"+leaf.right.coord.gety());
+                    //Case X division
+                    leftCoord   = leaf.coord;
+                    rightCoord  = new Point(division.first().getx()+(widthLine/2), division.first().gety());
+                    //Case the width line is impair we slice left part
+                    leftWidth   = division.first().getx() - leftCoord.getx() - (int)Math.ceil((double)widthLine/2);
+                    rightWidth  = leaf.coord.getx()+leaf.width - division.first().getx() - (int)Math.floor((double)widthLine/2);
+                    leftHeight  = leaf.height;
+                    rightHeight = leaf.height;
+
                 }else{
                     //Case Y division
-                    leaf.left = new Tree(leaf.coord, leaf.width, (division.first().gety() - leaf.coord.gety() - (widthLine/2)), rnd);
-                    leaf.right = new Tree(new Point(division.first().getx(), division.first().gety()+(widthLine/2)), leaf.width, (leaf.coord.gety()+leaf.height - division.first().gety() - (widthLine/2)), rnd);
-                    System.out.println(leaf.left.coord.getx()+":"+leaf.left.coord.gety());
-                    System.out.println(leaf.right.coord.getx()+":"+leaf.right.coord.gety());
+                    leftCoord   = leaf.coord;
+                    rightCoord  = new Point(division.first().getx(), division.first().gety()+(widthLine/2));
+                    leftWidth   = leaf.width;
+                    rightWidth  = leaf.width;
+                    //Case the width line is impair we slice left part 
+                    leftHeight  = division.first().gety() - leaf.coord.gety() - (int)Math.ceil((double)widthLine/2);
+                    rightHeight = leaf.coord.gety()+leaf.height - division.first().gety() - (int)Math.floor((double)widthLine/2);
                 }
+                
+                leaf.left = new Tree(leftCoord, leftWidth, leftHeight, rnd);
                 leaf.left.chooseColor(leaf.color, sameColorProb);
+                leaf.right = new Tree(rightCoord, rightWidth, rightHeight, rnd);
                 leaf.right.chooseColor(leaf.color, sameColorProb);
                 leaves+=1 ;
             }else{
@@ -194,8 +215,17 @@ public class Tree {
     }
 
     /**
+     * Method is a leaf divisable
+     * @param leaf
+     * @param minDimensionCut
+     * @return
+     */
+    public static boolean isDivisionPossible(Tree leaf, int minDimensionCut){
+        return leaf.width >= minDimensionCut || leaf.height >= minDimensionCut;
+    }
+
+    /**
      * Draw Image recursively
-     * ** The line are not drawn
      * @param a
      * @param img
      */
@@ -204,8 +234,7 @@ public class Tree {
             //Case it's a leaf
             img.setRectangle(a.coord.getx(), a.coord.getx()+a.width, a.coord.gety(), a.coord.gety()+a.height, a.color);
         }else{
-            drawImage(a.left, img);
-            // ** here depends the division                              
+            drawImage(a.left, img);                           
             drawImage(a.right, img);
         }
     }
