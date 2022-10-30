@@ -45,7 +45,17 @@ public class Tree {
     public void setDivisionAxis(boolean isX){
         this.isDivisionAxisX = isX;
     }
-
+    
+    
+    public boolean getDivisionAxis(){
+        return this.isDivisionAxisX ;
+    }
+    public int getwidth(){
+        return this.width;
+    }
+    public int getheight(){
+        return this.height;
+    }
     /**
      * Method to Image
      * @return Image
@@ -63,6 +73,7 @@ public class Tree {
      * @return
      */
     public void chooseColor(Color parentColor, double proba){
+        System.out.println(this.rnd.nextDouble()+ "<"+ proba);
         if(this.rnd.nextDouble() < proba){
             this.color = parentColor;
         }else{
@@ -70,16 +81,22 @@ public class Tree {
             switch(rndColor){
                 case 0:
                     this.color = Color.white;
+                    break;
                 case 1:
                     this.color = Color.red;
+                    break;
                 case 2:
                     this.color = Color.yellow;
+                    break;
                 case 3:
                     this.color = Color.blue;
+                    break;
                 case 4:
                     this.color = Color.black;
+                    break;
                 default:
                     this.color = Color.white;
+                    break;
             }
         }
     }
@@ -91,8 +108,9 @@ public class Tree {
      * @return division coord and isDivisionAxisX
      */
     public Pair<Point, Boolean> chooseDivision(double proportion){
-        double p = (this.width*this.height)/(Math.pow(this.width+this.height, 1.5));
-        if(rnd.nextDouble() < p){
+        double p = ((double)(this.getwidth()) / (double)(this.getwidth()+this.getheight()));
+        double randnum = this.rnd.nextDouble();
+        if(randnum < p){
             //Division X axis
             int s = this.width;
             int intervalMin = (int)Math.min(Math.ceil(s*(1-proportion)), Math.floor(s*proportion));
@@ -148,20 +166,26 @@ public class Tree {
         while(isPossible && leaves < nbLeaves){
             Tree leaf = chooseLeaf(a);
             if(leaf.width >= minDimensionCut || leaf.height >= minDimensionCut){
-                Pair<Point, Boolean> division = a.chooseDivision(proportionCut);
+                Pair<Point, Boolean> division = leaf.chooseDivision(proportionCut);
+                System.out.println("division :" + division.first().getx()+":"+division.first().gety());
+                if(division.second())System.out.println("division en X");else System.out.println("division en Y");
                 leaf.setDivisionAxis(division.second());
                 if(division.second()){
                     //Case X division //Arrondir line div 2 en dessous pour left et inverse pour right
                     leaf.left = new Tree(leaf.coord, (division.first().getx() - leaf.coord.getx() - (widthLine/2)), leaf.height, rnd);
                     leaf.right = new Tree(new Point(division.first().getx()+(widthLine/2), division.first().gety()), (leaf.coord.getx()+leaf.width - division.first().getx() - (widthLine/2)), leaf.height, rnd);
+                    System.out.println(leaf.left.coord.getx()+":"+leaf.left.coord.gety());
+                    System.out.println(leaf.right.coord.getx()+":"+leaf.right.coord.gety());
                 }else{
                     //Case Y division
                     leaf.left = new Tree(leaf.coord, leaf.width, (division.first().gety() - leaf.coord.gety() - (widthLine/2)), rnd);
                     leaf.right = new Tree(new Point(division.first().getx(), division.first().gety()+(widthLine/2)), leaf.width, (leaf.coord.gety()+leaf.height - division.first().gety() - (widthLine/2)), rnd);
+                    System.out.println(leaf.left.coord.getx()+":"+leaf.left.coord.gety());
+                    System.out.println(leaf.right.coord.getx()+":"+leaf.right.coord.gety());
                 }
                 leaf.left.chooseColor(leaf.color, sameColorProb);
                 leaf.right.chooseColor(leaf.color, sameColorProb);
-                leaves+=2;
+                leaves+=1 ;
             }else{
                 isPossible = false;
             }
@@ -182,7 +206,7 @@ public class Tree {
             img.setRectangle(a.coord.getx(), a.coord.getx()+a.width, a.coord.gety(), a.coord.gety()+a.height, a.color);
         }else{
             drawImage(a.left, img);
-            // ** here depends the division
+            // ** here depends the division                              
             drawImage(a.right, img);
         }
     }
