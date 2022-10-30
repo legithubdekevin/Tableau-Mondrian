@@ -99,6 +99,11 @@ public class Tree {
         }
     }
 
+    /**
+     * Calculate the weight of a rectangle
+     * @param a
+     * @return the weight
+     */
     public static double weight(Tree a){
         return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
     }
