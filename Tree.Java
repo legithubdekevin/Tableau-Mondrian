@@ -7,7 +7,9 @@ public class Tree {
     private int   width,height;
     private Tree  left,right;
 
-
+    /*
+     * Constructor
+     */
     Tree(int width, int height){
         this.point=new Point(0,0);
         this.color=Color.white;
@@ -17,7 +19,11 @@ public class Tree {
         this.right=null;
 
     }
-
-    public static chooseColor()
+    /*
+     * Methodes
+     */
+    public static void chooseColor(Color parentColor, double proba){
+        if()
+    }
 
 }
