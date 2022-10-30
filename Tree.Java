@@ -77,7 +77,7 @@ public class Tree {
         if(this.rnd.nextDouble() < proba){
             this.color = parentColor;
         }else{
-            int rndColor = (int)(this.rnd.nextDouble()*4);
+            int rndColor = (int)(this.rnd.nextDouble()*5);
             switch(rndColor){
                 case 0:
                     this.color = Color.white;
