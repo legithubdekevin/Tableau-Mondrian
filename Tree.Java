@@ -4,10 +4,12 @@ import java.lang.Math;
 public class Tree {
 
     private Random rnd;
+
     private Point coord;
     private Color color;
     private int   width,height;
     private Tree  left,right;
+    private boolean isDivisionAxisX;
 
     /**
      * Constructor
@@ -23,6 +25,25 @@ public class Tree {
         this.right=null;
 
         this.rnd = rnd;
+    }
+
+    Tree(Point coord, int width, int height, Random rnd){
+        this.rnd = rnd;
+
+        this.coord = coord;
+        this.color = Color.white;
+        this.width = width;
+        this.height = height;
+        this.left = null;
+        this.right = null;        
+    }
+
+    /**
+     * Setter division axis
+     * @param isX
+     */
+    public void setDivisionAxis(boolean isX){
+        this.isDivisionAxisX = isX;
     }
 
     /**
@@ -117,6 +138,35 @@ public class Tree {
      */
     public static double weight(Tree a){
         return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
+    }
+
+    public static Tree generateRandomtree(int nbLeaves, int proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
+        Tree a = new Tree(width, height, rnd);
+        int leaves = 0;
+        boolean isPossible = true;
+
+        while(isPossible && leaves < nbLeaves){
+            Tree leaf = chooseLeaf(a);
+            if(leaf.width >= minDimensionCut || leaf.height >= minDimensionCut){
+                Pair<Point, Boolean> division = a.chooseDivision(proportionCut);
+                leaf.setDivisionAxis(division.second());
+                if(division.second()){
+                    //Case X division
+                    leaf.left = new Tree(leaf.coord, (division.first().getx() - leaf.coord.getx() - (widthLine/2)), leaf.height, rnd);
+                    leaf.right = new Tree(new Point(division.first().getx()+(widthLine/2), division.first().gety()), (leaf.coord.getx()+leaf.width - division.first().getx() - (widthLine/2)), leaf.height, rnd);
+                }else{
+                    //Case Y division
+                    leaf.left = new Tree(leaf.coord, leaf.width, (division.first().gety() - leaf.coord.gety() - (widthLine/2)), rnd);
+                    leaf.right = new Tree(new Point(division.first().getx(), division.first().gety()+(widthLine/2)), leaf.width, (leaf.coord.gety()+leaf.height - division.first().gety() - (widthLine/2)), rnd);
+                }
+                leaf.left.chooseColor(leaf.color, sameColorProb);
+                leaf.right.chooseColor(leaf.color, sameColorProb);
+            }else{
+                isPossible = false;
+            }
+        }
+
+        return a;
     }
 
     /**
