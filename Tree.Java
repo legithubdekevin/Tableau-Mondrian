@@ -140,7 +140,7 @@ public class Tree {
         return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
     }
 
-    public static Tree generateRandomtree(int nbLeaves, int proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
+    public static Tree generateRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
         Tree a = new Tree(width, height, rnd);
         int leaves = 0;
         boolean isPossible = true;
@@ -151,7 +151,7 @@ public class Tree {
                 Pair<Point, Boolean> division = a.chooseDivision(proportionCut);
                 leaf.setDivisionAxis(division.second());
                 if(division.second()){
-                    //Case X division
+                    //Case X division //Arrondir line div 2 en dessous pour left et inverse pour right
                     leaf.left = new Tree(leaf.coord, (division.first().getx() - leaf.coord.getx() - (widthLine/2)), leaf.height, rnd);
                     leaf.right = new Tree(new Point(division.first().getx()+(widthLine/2), division.first().gety()), (leaf.coord.getx()+leaf.width - division.first().getx() - (widthLine/2)), leaf.height, rnd);
                 }else{
@@ -161,6 +161,7 @@ public class Tree {
                 }
                 leaf.left.chooseColor(leaf.color, sameColorProb);
                 leaf.right.chooseColor(leaf.color, sameColorProb);
+                leaves+=2;
             }else{
                 isPossible = false;
             }
