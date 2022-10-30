@@ -80,6 +80,27 @@ public class Tree {
         }
     }
 
+    /**
+     * Recursive function to choose leaf
+     * @param a Tree
+     * @return the leaf with the highest weight
+     */
+    public static Tree chooseLeaf(Tree a){
+        if(a.left == null && a.right == null){
+            return a;
+        }else{
+            Tree childLeft = chooseLeaf(a.left);
+            Tree childRight = chooseLeaf(a.right);
+            if(weight(childLeft) >= weight(childRight)){
+                return childLeft;
+            }else{
+                return childRight;
+            }
+        }
+    }
 
+    public static double weight(Tree a){
+        return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
+    }
 
 }
