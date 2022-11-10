@@ -230,7 +230,7 @@ public class Tree {
                 //Delete max weigth and insert child in AVL
                 weights = AVL.deleteMax(weights);
                 weights= AVL.add(weights, leaf.left).first();
-                weights = AVL.add(weights, leaf.left).first();
+                weights = AVL.add(weights, leaf.right).first();
                 
                 leaves+=1 ;
             }else{
