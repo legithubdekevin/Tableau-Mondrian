@@ -229,8 +229,8 @@ public class Tree {
                 leaf.right.chooseColor(leaf.color, sameColorProb);
                 //Delete max weigth and insert child in AVL
                 weights = AVL.deleteMax(weights);
-                weights = AVL.add(weights, leaf.left);
-                weights = AVL.add(weights, leaf.right);
+                weights= AVL.add(weights, leaf.left).first();
+                weights = AVL.add(weights, leaf.left).first();
                 
                 leaves+=1 ;
             }else{
