@@ -183,8 +183,8 @@ public class Tree {
 
         while(isPossible && leaves < nbLeaves){
             Tree leaf = chooseLeaf(a);
-            if(isDivisionPossible(leaf, minDimensionCut)){
-                Pair<Point, Boolean> division = leaf.chooseDivision(proportionCut);
+            Pair<Point, Boolean> division = leaf.chooseDivision(proportionCut);
+            if(isDivisionPossible(leaf, minDimensionCut, division.second())){
                 leaf.setDivisionAxis(division.second());
 
                 Point leftCoord;
@@ -241,8 +241,12 @@ public class Tree {
      * @param minDimensionCut
      * @return
      */
-    public static boolean isDivisionPossible(Tree leaf, int minDimensionCut){
-        return leaf.width >= minDimensionCut || leaf.height >= minDimensionCut;
+    public static boolean isDivisionPossible(Tree leaf, int minDimensionCut, boolean isDivisionAxisX){
+        if(isDivisionAxisX){
+            return leaf.width >= minDimensionCut;
+        }else{
+            return leaf.height >= minDimensionCut;
+        }
     }
 
     /**
