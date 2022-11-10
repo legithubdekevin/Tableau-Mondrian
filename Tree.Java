@@ -154,6 +154,10 @@ public class Tree {
         }
     }
 
+    public static Tree chooseLeaf(AVL weights){
+        return AVL.max(weights);
+    }
+
     /**
      * Calculate the weight of a rectangle
      * @param a
@@ -180,9 +184,12 @@ public class Tree {
         Tree a = new Tree(width, height, rnd);
         int leaves = 1;
         boolean isPossible = true;
+        AVL weights = new AVL(a, null, null);
 
         while(isPossible && leaves < nbLeaves){
-            Tree leaf = chooseLeaf(a);
+            //Choose a leaf
+            //Tree leaf = chooseLeaf(a);
+            Tree leaf = chooseLeaf(weights);
             Pair<Point, Boolean> division = leaf.chooseDivision(proportionCut);
             if(isDivisionPossible(leaf, minDimensionCut, division.second())){
                 leaf.setDivisionAxis(division.second());
@@ -215,10 +222,16 @@ public class Tree {
                     rightHeight = leaf.coord.gety()+leaf.height - division.first().gety() - (int)Math.floor((double)widthLine/2);
                 }
                 
+                //Create child
                 leaf.left = new Tree(leftCoord, leftWidth, leftHeight, rnd);
                 leaf.left.chooseColor(leaf.color, sameColorProb);
                 leaf.right = new Tree(rightCoord, rightWidth, rightHeight, rnd);
                 leaf.right.chooseColor(leaf.color, sameColorProb);
+                //Delete max weigth and insert child in AVL
+                weights = AVL.deleteMax(weights);
+                weights = AVL.add(weights, leaf.left);
+                weights = AVL.add(weights, leaf.right);
+                
                 leaves+=1 ;
             }else{
                 isPossible = false;
