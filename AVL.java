@@ -35,6 +35,18 @@ public class AVL {
             return null;
         }
     }
+
+    public static Tree max(AVL tree){
+        if(tree != null){
+            if(tree.right == null){
+                return tree.elt;
+            }else{
+                return max(tree.right);
+            }
+        }else{
+            return null;
+        }
+    }
 	
 	public static Integer height(AVL tree) {
 		if(tree == null) {
