@@ -3,18 +3,18 @@ import java.lang.Math;
 
 public class Tree {
 
-    private Random rnd;
-
-    private Point coord;
-    private Color color;
-    private int   width,height;
-    private Tree  left,right;
+    private Random  rnd;
+    private Point   coord;
+    private Color   color;
+    private int     width,height;
+    private Tree    left,right;
     private boolean isDivisionAxisX;
 
     /**
      * Constructor
      * @param a
      * @param proportion
+     * complexity constant
      */
     Tree(int width, int height, Random rnd){
         this.coord=new Point(0,0);
@@ -45,7 +45,6 @@ public class Tree {
     public void setDivisionAxis(boolean isX){
         this.isDivisionAxisX = isX;
     }
-    
     
     public boolean getDivisionAxis(){
         return this.isDivisionAxisX ;
@@ -106,6 +105,7 @@ public class Tree {
      * @param a
      * @param proportion
      * @return division coord and isDivisionAxisX
+     * complexity constant
      */
     public Pair<Point, Boolean> chooseDivision(double proportion){
         double p = ((double)(this.getwidth()) / (double)(this.getwidth()+this.getheight()));
@@ -137,6 +137,7 @@ public class Tree {
      * Recursive function to choose leaf
      * @param a Tree
      * @return the leaf with the highest weight
+     * complexity linear on tree size
      */
     public static Tree chooseLeaf(Tree a){
         if(a.left == null && a.right == null){
@@ -162,6 +163,19 @@ public class Tree {
         return (a.width*a.height)/(Math.pow(a.width+a.height, 1.5));
     }
 
+    /**
+     * 
+     * @param nbLeaves
+     * @param proportionCut
+     * @param minDimensionCut
+     * @param sameColorProb
+     * @param widthLine
+     * @param rnd
+     * @param width
+     * @param height
+     * @return
+     * complexity quadratic on nbLeaves
+     */
     public static Tree generateRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
         Tree a = new Tree(width, height, rnd);
         int leaves = 1;
@@ -214,6 +228,13 @@ public class Tree {
         return a;
     }
 
+    public static Tree generateBetterRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
+        Tree a = new Tree(width, height, rnd);
+
+
+        return a;
+    }
+
     /**
      * Method is a leaf divisable
      * @param leaf
@@ -228,6 +249,7 @@ public class Tree {
      * Draw Image recursively
      * @param a
      * @param img
+     * complexity nbLeaves * heightLeaf * widthLeaf
      */
     public static void drawImage(Tree a, Image img){
         if(a.left == null && a.right == null){
