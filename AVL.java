@@ -12,15 +12,36 @@ public class AVL {
 		this.bal = height(right) - height(left);
 	}
 
-    public static AVL add(AVL tree, Tree elt){
+    public static Pair<AVL, Integer> add(AVL tree, Tree elt){
         if(tree == null){
-            return new AVL(elt, null, null);
+            return new Pair(new AVL(elt, null, null), 1);
         }else{
-            if(Tree.weight(tree.elt) < Tree.weight(elt)){
-                return new AVL(tree.elt, add(tree.left, elt), tree.right);
+            if(elt == tree.elt){
+                return new Pair(tree, 0);
             }else{
-                return new AVL(tree.elt, tree.left, add(tree.right, elt));
+                int h;
+                if(Tree.weight(tree.elt) < Tree.weight(elt)){
+                    Pair<AVL, Integer> res = add(tree.right, elt);
+                    tree.right = res.first();
+                    h = res.second();
+                }else{
+                    Pair<AVL, Integer> res = add(tree.left, elt);
+                    tree.left = res.first();
+                    h = -res.second();
+                }
+                if(h == 0){
+                    return new Pair<AVL, Integer>(tree, 0);
+                }else{
+                    tree.bal = tree.bal+h;
+                    tree = rebalance(tree);
+                    if(tree.bal == 0){
+                        return new Pair<AVL,Integer>(tree, 0);
+                    }else{
+                        return new Pair<AVL,Integer>(tree, 1);
+                    }
+                }
             }
+
         }
     }
 
