@@ -14,10 +14,10 @@ public class AVL {
     public static Pair<AVL, Integer> add(AVL tree, Tree elt){
         if(tree == null){
 
-            return new Pair(new AVL(elt, null, null), 1);
+            return new Pair<AVL, Integer>(new AVL(elt, null, null), 1);
         }else{
             if(elt == tree.elt){
-                return new Pair(tree, 0);
+                return new Pair<AVL, Integer>(tree, 0);
             }else{
                 int h;
                 if(Tree.weight(tree.elt) < Tree.weight(elt)){
@@ -44,39 +44,6 @@ public class AVL {
 
         }
     }
-	// public static Pair<AVL, Integer> add(AVL tree, int elt){
-    //     if(tree == null){
-
-    //         return new Pair(new AVL(elt, null, null), 1);
-    //     }else{
-    //         if(elt == tree.elt){
-    //             return new Pair(tree, 0);
-    //         }else{
-    //             int h;
-    //             if(tree.elt < elt){
-    //                 Pair<AVL, Integer> res = add(tree.right, elt);
-    //                 tree.right = res.first();
-    //                 h = res.second();
-    //             }else{
-    //                 Pair<AVL, Integer> res = add(tree.left, elt);
-    //                 tree.left = res.first();
-    //                 h = -res.second();
-    //             }
-    //             if(h == 0){
-    //                 return new Pair<AVL, Integer>(tree, 0);
-    //             }else{
-    //                 tree.bal = tree.bal+h;
-    //                 tree = rebalance(tree);
-    //                 if(tree.bal == 0){
-    //                     return new Pair<AVL,Integer>(tree, 0);
-    //                 }else{
-    //                     return new Pair<AVL,Integer>(tree, 1); 		
-    //                 }
-    //             }
-    //         }
-
-    //     }
-    // }
 
 
     public static AVL deleteMax(AVL tree){
