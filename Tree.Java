@@ -55,6 +55,9 @@ public class Tree {
     public int getheight(){
         return this.height;
     }
+    public Point getCoord() {
+        return coord;
+    }
     /**
      * Method to Image
      * @return Image
@@ -241,13 +244,6 @@ public class Tree {
         return a;
     }
 
-    public static Tree generateBetterRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height){
-        Tree a = new Tree(width, height, rnd);
-
-
-        return a;
-    }
-
     /**
      * Method is a leaf divisable
      * @param leaf
@@ -277,5 +273,26 @@ public class Tree {
             drawImage(a.right, img);
         }
     }
+
+
+    //New Strategy 
+
+    public static Tree chooseLeaf2(Point p, QuadTree a){
+        return QuadTree.getTreeContained(p, a);
+    }
+
+    public static Tree generateBetterRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height, Point center){
+        Tree a = new Tree(width, height, rnd);
+        QuadTree pp = new QuadTree(a);
+        for(int i = 0; i<nbLeaves ; i++){
+            int random = 0;
+            Point rndPoint;
+            
+            //Tree chose = chooseLeaf2(rndPoint, pp);
+        }
+
+        return a;
+    }
+
 
 }
