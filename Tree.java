@@ -277,18 +277,33 @@ public class Tree {
 
     //New Strategy 
 
-    public static Tree chooseLeaf2(Point p, QuadTree a){
-        return QuadTree.getTreeContained(p, a);
-    }
-
     public static Tree generateBetterRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height, Point center){
         Tree a = new Tree(width, height, rnd);
         QuadTree pp = new QuadTree(a);
+        int leaves = 1;
         for(int i = 0; i<nbLeaves ; i++){
-            int random = 0;
+            //Choose division Axis
+            boolean isDivisionAxisX = rnd.nextDouble() < proportionCut;
+            //Generate random point interpolate
             Point rndPoint;
-            
-            //Tree chose = chooseLeaf2(rndPoint, pp);
+            if(isDivisionAxisX){
+                int startX = rnd.nextDouble() < (center.getx() / width) ? 0 : width;
+                int interpolateX = startX+(center.getx() - startX)*(leaves/nbLeaves);
+                int randomY = (int)(rnd.nextDouble() * height);
+                rndPoint = new Point(interpolateX, randomY);
+            }else{
+                int startY = rnd.nextDouble() < (center.gety() / height) ? 0 : height;
+                int interpolateY = startY+(center.gety() - startY)*(leaves/nbLeaves); 
+                int randomX = (int)(rnd.nextDouble() * width);
+                rndPoint = new Point(randomX, interpolateY);
+            }
+
+            //Trouver la feuille contenant le point
+            //Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
+            System.out.println(rndPoint.gety()+", "+ rndPoint.gety());
+            //Bref
+
+            leaves++;
         }
 
         return a;
