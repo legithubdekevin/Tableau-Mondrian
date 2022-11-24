@@ -92,7 +92,7 @@ public class QuadTree {
 
     public static Image draw(QuadTree tree, int width, int height){
         Image img = new Image(width, height);
-        img.setRectangle(0, width, 0, height, Color.red);
+        img.setRectangle(0, width, 0, height, Color.black);
         drawRec(tree, img, 0, 0, width, height);
         return img;
     }
@@ -103,9 +103,11 @@ public class QuadTree {
             System.out.println(width+"x"+height);
             System.out.println(tree.getCoord().getx()+", "+tree.getCoord().gety());
             //Draw horizontal
-            img.setRectangle(startX, width, tree.coord.getCoord().gety()+2, tree.coord.getCoord().gety()-2, Color.white);
+            System.out.println(startX+", "+width+", "+(tree.coord.getCoord().gety()+2)+", "+(tree.coord.getCoord().gety()-2));
+            img.setRectangle(startX, width, Math.max(0, tree.coord.getCoord().gety()-2), tree.coord.getCoord().gety()+2, Color.white);
             //Draw vertical
-            img.setRectangle(tree.coord.getCoord().getx()+2, tree.coord.getCoord().getx()-2, startY, height, Color.white);
+            System.out.println((tree.coord.getCoord().getx()+2)+", "+(tree.coord.getCoord().getx()-2)+", "+startY+", "+height);
+            img.setRectangle(Math.max(0, tree.coord.getCoord().getx()-2), tree.coord.getCoord().getx()+2, startY, height, Color.white);
             System.out.println(tree.v1);
             System.out.println(tree.v2);
             System.out.println(tree.v3);
