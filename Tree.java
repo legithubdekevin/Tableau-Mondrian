@@ -275,11 +275,25 @@ public class Tree {
     }
 
 
-    //New Strategy 
-
+    /**
+     * New Strategy
+     * @param nbLeaves
+     * @param proportionCut
+     * @param minDimensionCut
+     * @param sameColorProb
+     * @param widthLine
+     * @param rnd
+     * @param width
+     * @param height
+     * @param center
+     * @return
+     */
     public static Tree generateBetterRandomtree(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height, Point center){
         Tree a = new Tree(width, height, rnd);
         QuadTree pp = new QuadTree(a);
+        Image imgp = new Image(width, height);
+        imgp.setRectangle(0, width, 0, height, Color.white);
+        imgp.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
         int leaves = 1;
         boolean isPossible = true;
         while(leaves < nbLeaves && isPossible){
@@ -358,10 +372,106 @@ public class Tree {
                 pp = QuadTree.addPoint(leaf.right, pp);
                 
                 leaves+=1 ;
-                // Image img=a.toImage();
-                // try{
-                //     img.save("img"+leaves+".png");
-                // }
+                try{
+                    Image img = a.toImage();
+                    img.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
+                    img.save("img"+leaves+".png");
+                    
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }else{
+                isPossible = false;
+            }
+        }
+
+        return a;
+    }
+
+    public static Tree generateBetterRandomtree2(int nbLeaves, double proportionCut, int minDimensionCut, double sameColorProb, int widthLine, Random rnd, int width, int height, Point center){
+        Tree a = new Tree(width, height, rnd);
+        QuadTree pp = new QuadTree(a);
+        Image imgp = new Image(width, height);
+        imgp.setRectangle(0, width, 0, height, Color.white);
+        imgp.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
+        int leaves = 1;
+        boolean isPossible = true;
+        //Get max radius
+        int maxRadius = Math.min(Math.min(center.getx(), width-center.getx()), Math.min(center.gety(), height-center.gety()))-minDimensionCut; 
+        while(leaves < nbLeaves && isPossible){
+            //Choose division Axis
+            boolean isDivisionAxisX = rnd.nextDouble() < proportionCut;
+
+            //Interpolate radius
+            int interpolateRadius = maxRadius-(int)(maxRadius*((double)leaves/(double)nbLeaves));
+            //Random polar coord
+            int randomTheta = (int)(rnd.nextDouble()*360);
+
+
+            Point rndPoint = new Point(center.getx()+(int)(interpolateRadius*Math.cos(Math.toRadians(randomTheta))), center.gety()+(int)(interpolateRadius*Math.sin(Math.toRadians(randomTheta))));
+            //Trouver la feuille contenant le point
+            Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
+            if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
+                System.out.println("LEAF "+leaf.coord.getx()+", "+leaf.coord.gety()+" h: "+leaf.height+" w: "+leaf.width);
+                leaf.setDivisionAxis(isDivisionAxisX);
+
+                
+
+                Point leftCoord;
+                Point rightCoord;
+                int leftWidth;
+                int rightWidth;
+                int leftHeight;
+                int rightHeight;
+
+                if(isDivisionAxisX){
+                    //Case X division
+                    leftCoord   = leaf.coord;
+                    rightCoord  = new Point(rndPoint.getx()+(widthLine/2), leaf.coord.gety());
+                    //Case the width line is impair we slice left part
+                    leftWidth   = rndPoint.getx() - leftCoord.getx() - (int)Math.ceil((double)widthLine/2);
+                    rightWidth  = leaf.coord.getx()+leaf.width - rndPoint.getx() - (int)Math.floor((double)widthLine/2);
+                    leftHeight  = leaf.height;
+                    rightHeight = leaf.height;
+                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
+                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
+                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
+                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
+
+                }else{
+                    //Case Y division
+                    leftCoord   = leaf.coord;
+                    rightCoord  = new Point(leaf.coord.getx(), rndPoint.gety()+(widthLine/2));
+                    leftWidth   = leaf.width;
+                    rightWidth  = leaf.width;
+                    //Case the width line is impair we slice left part 
+                    leftHeight  = rndPoint.gety() - leaf.coord.gety() - (int)Math.ceil((double)widthLine/2);
+                    rightHeight = leaf.coord.gety()+leaf.height - rndPoint.gety() - (int)Math.floor((double)widthLine/2);
+                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
+                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
+                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
+                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
+                }
+                
+                //Create child
+                leaf.left = new Tree(leftCoord, leftWidth, leftHeight, rnd);
+                leaf.left.chooseColor(leaf.color, sameColorProb);
+                leaf.right = new Tree(rightCoord, rightWidth, rightHeight, rnd);
+                leaf.right.chooseColor(leaf.color, sameColorProb);
+                //insert child in QuadTree
+                pp = QuadTree.addPoint(leaf.right, pp);
+                
+                leaves+=1 ;
+                try{
+                    Image img = a.toImage();
+                    img.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
+                    img.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
+
+                    img.save("img"+leaves+".png");
+                    
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
             }else{
                 isPossible = false;
             }
