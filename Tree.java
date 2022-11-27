@@ -459,6 +459,7 @@ public class Tree {
                 leaf.right = new Tree(rightCoord, rightWidth, rightHeight, rnd);
                 leaf.right.chooseColor(leaf.color, sameColorProb);
                 //insert child in QuadTree
+                pp = QuadTree.addPoint(leaf.left, pp);
                 pp = QuadTree.addPoint(leaf.right, pp);
                 
                 leaves+=1 ;
@@ -468,6 +469,8 @@ public class Tree {
                     img.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
 
                     img.save("img"+leaves+".png");
+
+                    QuadTree.draw(pp, width, height).save("qt"+leaves+".png");
                     
                 } catch (Exception e) {
                     // TODO: handle exception
