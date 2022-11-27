@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.lang.Math;
 
+import javax.swing.text.AttributeSet.ColorAttribute;
+
 public class Tree {
 
     private Random  rnd;
@@ -411,11 +413,12 @@ public class Tree {
             Point rndPoint = new Point(center.getx()+(int)(interpolateRadius*Math.cos(Math.toRadians(randomTheta))), center.gety()+(int)(interpolateRadius*Math.sin(Math.toRadians(randomTheta))));
             //Trouver la feuille contenant le point
             Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
+            QuadTree.displayPoint(pp);
+            
+            System.out.println(rndPoint.getx()+", "+rndPoint.gety());
             if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
                 System.out.println("LEAF "+leaf.coord.getx()+", "+leaf.coord.gety()+" h: "+leaf.height+" w: "+leaf.width);
                 leaf.setDivisionAxis(isDivisionAxisX);
-
-                
 
                 Point leftCoord;
                 Point rightCoord;
@@ -433,10 +436,6 @@ public class Tree {
                     rightWidth  = leaf.coord.getx()+leaf.width - rndPoint.getx() - (int)Math.floor((double)widthLine/2);
                     leftHeight  = leaf.height;
                     rightHeight = leaf.height;
-                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
-                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
-                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
-                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
 
                 }else{
                     //Case Y division
@@ -447,10 +446,6 @@ public class Tree {
                     //Case the width line is impair we slice left part 
                     leftHeight  = rndPoint.gety() - leaf.coord.gety() - (int)Math.ceil((double)widthLine/2);
                     rightHeight = leaf.coord.gety()+leaf.height - rndPoint.gety() - (int)Math.floor((double)widthLine/2);
-                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
-                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
-                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
-                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
                 }
                 
                 //Create child
@@ -463,6 +458,7 @@ public class Tree {
                 pp = QuadTree.addPoint(leaf.right, pp);
                 
                 leaves+=1 ;
+                //Draw state images
                 try{
                     Image img = a.toImage();
                     img.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
@@ -470,10 +466,16 @@ public class Tree {
 
                     img.save("img"+leaves+".png");
 
-                    QuadTree.draw(pp, width, height).save("qt"+leaves+".png");
+                    Image qtImg = QuadTree.draw(pp, width, height);
+                    qtImg.setRectangle(leaf.left.coord.getx(), leaf.left.coord.getx()+leaf.left.width, leaf.left.coord.gety(), leaf.left.coord.gety()+leaf.left.height, Color.green);
+                    qtImg.setRectangle(leaf.right.coord.getx(), leaf.right.coord.getx()+leaf.right.width, leaf.right.coord.gety(), leaf.right.coord.gety()+leaf.right.height, Color.red);
+                    qtImg.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
+                    qtImg.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
+                    qtImg.save("qt"+leaves+".png");
                     
                 } catch (Exception e) {
                     // TODO: handle exception
+                    e.printStackTrace();
                 }
             }else{
                 isPossible = false;
