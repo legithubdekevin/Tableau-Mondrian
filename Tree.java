@@ -159,8 +159,17 @@ public class Tree {
         }
     }
 
+    //public static Tree chooseLeaf(AVL weights){
+    //    return AVL.max(weights);
+    //}
+
+    //Weight != null
     public static Tree chooseLeaf(AVL weights){
-        return AVL.max(weights);
+        if(weights.right == null){
+            return weights.elt;
+        }else{
+            return chooseLeaf(weights.right);
+        }
     }
 
     /**
