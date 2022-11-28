@@ -420,11 +420,11 @@ public class Tree {
 
 
             Point rndPoint = new Point(center.getx()+(int)(interpolateRadius*Math.cos(Math.toRadians(randomTheta))), center.gety()+(int)(interpolateRadius*Math.sin(Math.toRadians(randomTheta))));
+            System.out.println(rndPoint.getx()+", "+rndPoint.gety());
             //Trouver la feuille contenant le point
             Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
             QuadTree.displayPoint(pp);
             
-            System.out.println(rndPoint.getx()+", "+rndPoint.gety());
             if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
                 System.out.println("LEAF "+leaf.coord.getx()+", "+leaf.coord.gety()+" h: "+leaf.height+" w: "+leaf.width);
                 leaf.setDivisionAxis(isDivisionAxisX);

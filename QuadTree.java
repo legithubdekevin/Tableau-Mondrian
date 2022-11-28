@@ -27,7 +27,6 @@ public class QuadTree {
     public static void displayPoint(QuadTree a){
         if(a != null){
             System.out.println(a.getCoord().getx()+", "+a.getCoord().gety());
-            System.out.println("fils");
             displayPoint(a.v1);
             displayPoint(a.v2);
             displayPoint(a.v3);
@@ -36,20 +35,21 @@ public class QuadTree {
     }
 
     public static Tree getTreeContained(Point p, QuadTree a){
-        if(p.getx()<a.getCoord().getx()&& p.gety()<a.getCoord().gety()&& a.v1!=null){
+            System.out.println("LEAFqt "+a.getCoord().coord.getx()+", "+a.getCoord().coord.gety()+" h: "+a.getCoord().height+" w: "+a.getCoord().width);
             System.out.println(p.getx()+" < "+a.getCoord().getx()+" && "+p.gety()+" < "+a.getCoord().gety());
+            System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+"<"+a.getCoord().gety());
+            System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety());
+            System.out.println(p.getx()+"<"+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety());
+        if(p.getx()<a.getCoord().getx()&& p.gety()<a.getCoord().gety()&& a.v1!=null){
             return getTreeContained(p, a.v1);
         }
         else if(p.getx()>=a.getCoord().getx()&&p.gety()<a.getCoord().gety()&& a.v2!=null){
-            System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+"<"+a.getCoord().gety());
             return getTreeContained(p, a.v2);
         }
         else if(p.getx()>=a.getCoord().getx()&&p.gety()>=a.getCoord().gety()&& a.v3!=null){
-            System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety());
             return getTreeContained(p, a.v3); 
         }
         else if(p.getx()<a.getCoord().getx()&&p.gety()>=a.getCoord().gety()&& a.v4!=null){
-            System.out.println(p.getx()+"<"+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety());
             return getTreeContained(p, a.v4); 
         }
         else{
