@@ -4,7 +4,7 @@ class Main {
      * @param args
      */
     public static void main(String[] args) {
-        Tree a = Tree.generateBetterRandomtree2(20, 0.3, 5, 0.5, 2, new Random(2), 1400, 1000, new Point(500, 500));
+        Tree a = Tree.generateBetterRandomtree2(300, 0.5, 0, 0.5, 0, new Random(3), 1000, 1000, new Point(500, 500));
         Image img=a.toImage();
         
         // AVL Arbre = new AVL(0, null, null);
