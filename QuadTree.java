@@ -35,11 +35,6 @@ public class QuadTree {
     }
 
     public static Tree getTreeContained(Point p, QuadTree a){
-            // System.out.println("LEAFqt "+a.coord.getCoord().getx()+", "+a.coord.getCoord().gety()+" h: "+a.coord.getheight()+" w: "+a.coord.getwidth());
-            // System.out.println(p.getx()+" < "+a.getCoord().getx()+" && "+p.gety()+" < "+a.getCoord().gety()+" "+a.v1);
-            // System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+"<"+a.getCoord().gety()+" "+a.v2);
-            // System.out.println(p.getx()+">="+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety()+" "+a.v3);
-            // System.out.println(p.getx()+"<"+a.getCoord().getx()+"&&"+p.gety()+">="+a.getCoord().gety()+" "+a.v4);
             //Interval avec hauteur et largeur de element
         if(p.getx()<a.getCoord().getx()&& p.gety()<a.getCoord().gety()&& a.v1!=null){
             return getTreeContained(p, a.v1);
