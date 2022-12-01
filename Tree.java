@@ -159,10 +159,6 @@ public class Tree {
         }
     }
 
-    //public static Tree chooseLeaf(AVL weights){
-    //    return AVL.max(weights);
-    //}
-
     //Weight != null
     public static Tree chooseLeaf(AVL weights){
         if(weights.right == null){
@@ -335,7 +331,6 @@ public class Tree {
                 int randomX = (int)(rnd.nextDouble() * width);
                 rndPoint = new Point(randomX, interpolateY);
             }
-            //System.out.println(rndPoint.getx()+", "+rndPoint.gety());
             //Trouver la feuille contenant le point
             Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
             if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
@@ -390,14 +385,6 @@ public class Tree {
                 pp = QuadTree.addPoint(leaf.left, pp);
                 
                 leaves+=1 ;
-                try{
-                    // Image img = a.toImage();
-                    // img.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
-                    // img.save("img"+leaves+".png");
-                    
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
             }else{
                 isPossible = false;
             }
@@ -426,13 +413,10 @@ public class Tree {
             int randomTheta = (int)(rnd.nextDouble()*360);
 
             Point rndPoint = new Point(center.getx()+(int)(interpolateRadius*Math.cos(Math.toRadians(randomTheta))), center.gety()+(int)(interpolateRadius*Math.sin(Math.toRadians(randomTheta))));
-            // System.out.println(rndPoint.getx()+", "+rndPoint.gety());
             //Trouver la feuille contenant le point
             Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
-            // QuadTree.displayPoint(pp);
             
             if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
-                // System.out.println("LEAF "+leaf.coord.getx()+", "+leaf.coord.gety()+" h: "+leaf.height+" w: "+leaf.width);
                 leaf.setDivisionAxis(isDivisionAxisX);
 
                 Point leftCoord;
@@ -473,25 +457,6 @@ public class Tree {
                 pp = QuadTree.addPoint(leaf.left, pp);
                 
                 leaves+=1 ;
-                //Draw state images
-                try{
-                    // Image img = a.toImage();
-                    // img.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
-                    // img.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
-
-                    // img.save("img"+leaves+".png");
-
-                    // Image qtImg = QuadTree.draw(pp, width, height);
-                    // qtImg.setRectangle(leaf.left.coord.getx(), leaf.left.coord.getx()+leaf.left.width, leaf.left.coord.gety(), leaf.left.coord.gety()+leaf.left.height, Color.green);
-                    // qtImg.setRectangle(leaf.right.coord.getx(), leaf.right.coord.getx()+leaf.right.width, leaf.right.coord.gety(), leaf.right.coord.gety()+leaf.right.height, Color.red);
-                    // qtImg.setRectangle(rndPoint.getx()-3, rndPoint.getx()+3, rndPoint.gety()-3, rndPoint.gety()+3, Color.yellow);
-                    // qtImg.setRectangle(center.getx()-3, center.getx()+3, center.gety()-3, center.gety()+3, Color.blue);
-                    // qtImg.save("qt"+leaves+".png");
-                    
-                } catch (Exception e) {
-                    // TODO: handle exception
-                    e.printStackTrace();
-                }
             }else{
                 isPossible = false;
             }
