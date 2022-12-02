@@ -309,14 +309,15 @@ public class Tree {
             //Generate random point interpolate
             Point rndPoint;
             double rnd2 = rnd.nextDouble();
-            double interpolateScale = ((double)leaves)/((double)nbLeaves);
+            double interpolateScale = (Math.log((double)leaves))/Math.log(((double)nbLeaves));
             if(isDivisionAxisX){
                 //Find max interval to divide
                 int startX = (center.getx()) < (width - center.getx()) ? width : 0;
                 //Find interpol point
                 int interpolateX = startX+(int)((center.getx() - startX)*(interpolateScale));
                     //Iverse interpolate 50% time
-                    if(rnd2>0.5);
+                    System.out.println("random : " + rnd2 + " ratio : " +(double)(center.getx())/(double)(width));
+                    if(rnd2<(double)(center.getx())/(double)(width)) interpolateX=Math.abs(width-interpolateX);;
                     
                 //Generate random y
                 int randomY = (int)(rnd.nextDouble() * height);
@@ -327,7 +328,8 @@ public class Tree {
                 //Find interpol point
                 int interpolateY = startY+(int)((center.gety() - startY)*(interpolateScale));
                     //Iverse interpolate 50% time
-                  if(rnd2>0.5)interpolateY=Math.abs(height-interpolateY);
+                    System.out.println("random : " + rnd2 + " ratio : " +(double)(center.gety())/(double)(height) );
+                  if(rnd2<(double)(center.gety())/(double)(height))interpolateY=Math.abs(height-interpolateY);
                 //Generate random x
                 int randomX = (int)(rnd.nextDouble() * width);
                 rndPoint = new Point(randomX, interpolateY);
