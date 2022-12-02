@@ -8,7 +8,7 @@ Voici une explication ainsi que des exemples
 
 ***La graine aléatoire ainsi que la taille de l'image générée est une contante fixée dans la classe Main** 
 
-## Sur linux on compile ainsi
+## Sur linux on compile de la manière suivante
 
 Commande de compilation
 
