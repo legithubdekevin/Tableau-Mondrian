@@ -6,6 +6,8 @@ L'exécution necessite de passer des arguments lors de l'appel de la commande d'
 
 Voici une explication ainsi que des exemples
 
+***La graine aléatoire ainsi que la taille de l'image générée est une contante fixée dans la classe Main** 
+
 ## Sur linux on compile ainsi
 
 Commande de compilation
