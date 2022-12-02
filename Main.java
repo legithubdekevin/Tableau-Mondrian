@@ -17,7 +17,7 @@ class Main {
      * @param args
      */
     public static void main(String[] args) {
-
+        System.out.println(args.length);
         try{
             if(args.length < 5) throw new Exception("Missing parameters");
             setnbLeaves(Integer.parseInt(args[0]));
@@ -27,7 +27,7 @@ class Main {
             setWidthLine(Integer.parseInt(args[4]));
             if(args.length > 6) {setCenterX(Integer.parseInt(args[5]));}
             if(args.length > 7) {setCenterY(Integer.parseInt(args[6]));}
-            if(args.length > 8) {setChoosedStrategy(args[7]);}else{setChoosedStrategy(null);}
+            if(args.length >= 8) {setChoosedStrategy(args[7]);}else{setChoosedStrategy(null);}
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -47,6 +47,7 @@ class Main {
                 e.printStackTrace();
             }
         }else if(choosedStrategy == 1){
+            System.out.println("test");
             a = Tree.generateBetterRandomtree(nbLeaves, proportionCut, minDimensionCut, sameColorProb, widthLine, rnd, WIDTH, HEIGHT, new Point(centerX, centerY));
             img=a.toImage();
 
@@ -57,6 +58,7 @@ class Main {
                 e.printStackTrace();
             }
         }else if(choosedStrategy == 2){
+
             a = Tree.generateBetterRandomtree2(nbLeaves, proportionCut, minDimensionCut, sameColorProb, widthLine, rnd, WIDTH, HEIGHT, new Point(centerX, centerY));
             img=a.toImage();
 

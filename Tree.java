@@ -316,7 +316,8 @@ public class Tree {
                 //Find interpol point
                 int interpolateX = startX+(int)((center.getx() - startX)*(interpolateScale));
                     //Iverse interpolate 50% time
-                    if(rnd2>0.5)interpolateX=Math.abs(height-interpolateX);
+                    if(rnd2>0.5);
+                    
                 //Generate random y
                 int randomY = (int)(rnd.nextDouble() * height);
                 rndPoint = new Point(interpolateX, randomY);

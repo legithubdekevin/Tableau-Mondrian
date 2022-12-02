@@ -3,12 +3,14 @@ public class AVL {
 	Integer bal;
 	AVL left;
 	AVL right;
+	int count;
 	
 	public AVL(Tree elt, AVL left, AVL right) {
 		this.elt = elt;
 		this.left = left;
 		this.right = right;
 		this.bal = height(right) - height(left);
+		this.count = 1;
 	}
  
     public static Pair<AVL, Integer> add(AVL tree, Tree elt){
