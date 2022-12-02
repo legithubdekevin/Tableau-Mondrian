@@ -1,8 +1,6 @@
 import java.awt.Color;
 import java.lang.Math;
 
-import javax.swing.text.AttributeSet.ColorAttribute;
-
 public class Tree {
 
     private Random  rnd;
