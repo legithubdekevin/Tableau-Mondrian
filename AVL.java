@@ -158,7 +158,7 @@ public class AVL {
 	public static void PrintAVL(AVL tree){
 		if(tree!=null){
 			PrintAVL(tree.left);
-			System.out.println("Valeur" + tree.key+" Balance :"+tree.bal);
+			System.out.println("Valeur" + tree.key+" Balance :"+tree.bal + ", Count : " + tree.count);
 			PrintAVL(tree.right);
 		}
 	}
