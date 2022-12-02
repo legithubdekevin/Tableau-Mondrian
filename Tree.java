@@ -316,7 +316,6 @@ public class Tree {
                 //Find interpol point
                 int interpolateX = startX+(int)((center.getx() - startX)*(interpolateScale));
                     //Iverse interpolate 50% time
-                    System.out.println("random : " + rnd2 + " ratio : " +(double)(center.getx())/(double)(width));
                     if(rnd2<(double)(center.getx())/(double)(width)) interpolateX=Math.abs(width-interpolateX);;
                     
                 //Generate random y
@@ -327,8 +326,7 @@ public class Tree {
                 int startY = (center.gety()) < (height - center.gety()) ? height : 0;
                 //Find interpol point
                 int interpolateY = startY+(int)((center.gety() - startY)*(interpolateScale));
-                    //Iverse interpolate 50% time
-                    System.out.println("random : " + rnd2 + " ratio : " +(double)(center.gety())/(double)(height) );
+                    //Inverse interpolate 50% time
                   if(rnd2<(double)(center.gety())/(double)(height))interpolateY=Math.abs(height-interpolateY);
                 //Generate random x
                 int randomX = (int)(rnd.nextDouble() * width);
@@ -337,7 +335,6 @@ public class Tree {
             //Trouver la feuille contenant le point
             Tree leaf = QuadTree.getTreeContained(rndPoint, pp);
             if(isDivisionPossible(leaf, minDimensionCut, isDivisionAxisX)){
-                System.out.println("LEAF "+leaf.coord.getx()+", "+leaf.coord.gety()+" h: "+leaf.height+" w: "+leaf.width);
                 leaf.setDivisionAxis(isDivisionAxisX);
 
                 
@@ -358,11 +355,6 @@ public class Tree {
                     rightWidth  = leaf.coord.getx()+leaf.width - rndPoint.getx() - (int)Math.floor((double)widthLine/2);
                     leftHeight  = leaf.height;
                     rightHeight = leaf.height;
-                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
-                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
-                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
-                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
-
                 }else{
                     //Case Y division
                     leftCoord   = leaf.coord;
@@ -372,10 +364,6 @@ public class Tree {
                     //Case the width line is impair we slice left part 
                     leftHeight  = rndPoint.gety() - leaf.coord.gety() - (int)Math.ceil((double)widthLine/2);
                     rightHeight = leaf.coord.gety()+leaf.height - rndPoint.gety() - (int)Math.floor((double)widthLine/2);
-                    System.out.println("startL : "+leftCoord.getx()+", "+leftCoord.gety());
-                    System.out.println("endL : "+(leftCoord.getx()+leftWidth)+", "+(leftCoord.gety()+leftHeight));
-                    System.out.println("startR : "+rightCoord.getx()+", "+rightCoord.gety());
-                    System.out.println("endR : "+(rightCoord.getx()+rightWidth)+", "+(rightCoord.gety()+rightHeight));
                 }
                 
                 //Create child
@@ -392,7 +380,6 @@ public class Tree {
                 isPossible = false;
             }
         }
-        System.out.println(leaves);
         return a;
     }
 
@@ -464,7 +451,6 @@ public class Tree {
                 isPossible = false;
             }
         }
-        System.out.println(leaves);
         return a;
     }
 
