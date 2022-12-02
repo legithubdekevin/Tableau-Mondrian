@@ -162,7 +162,7 @@ public class Tree {
     //Weight != null
     public static Tree chooseLeaf(AVL weights){
         if(weights.right == null){
-            return weights.elt;
+            return weights.elts.get(0);
         }else{
             return chooseLeaf(weights.right);
         }

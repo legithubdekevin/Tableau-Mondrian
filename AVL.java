@@ -1,28 +1,44 @@
+import java.util.ArrayList;
+
 public class AVL {
-	Tree elt;
+	double key;//Tree weigth
+	ArrayList<Tree> elts;
 	Integer bal;
 	AVL left;
 	AVL right;
 	int count;
 	
 	public AVL(Tree elt, AVL left, AVL right) {
-		this.elt = elt;
+		this.elts = new ArrayList<Tree>();
+		this.elts.add(elt);
+		this.key = Tree.weight(elt);
 		this.left = left;
 		this.right = right;
 		this.bal = height(right) - height(left);
 		this.count = 1;
 	}
+
+	public AVL(ArrayList<Tree> elts, AVL left, AVL right) {
+		this.elts = elts;
+		this.key = Tree.weight(elts.get(0));
+		this.left = left;
+		this.right = right;
+		this.bal = height(right) - height(left);
+		this.count = elts.size();
+	}
  
     public static Pair<AVL, Integer> add(AVL tree, Tree elt){
         if(tree == null){
-
             return new Pair<AVL, Integer>(new AVL(elt, null, null), 1);
         }else{
-            if(elt == tree.elt){
+            if(Tree.weight(elt) == tree.key){
+				//Count increment
+				tree.count++;
+				tree.elts.add(elt);
                 return new Pair<AVL, Integer>(tree, 0);
             }else{
                 int h;
-                if(Tree.weight(tree.elt) < Tree.weight(elt)){
+                if(tree.key < Tree.weight(elt)){
                     Pair<AVL, Integer> res = add(tree.right, elt);
                     tree.right = res.first();
                     h = res.second();
@@ -51,9 +67,16 @@ public class AVL {
     public static AVL deleteMax(AVL tree){
         if(tree != null){
             if(tree.right == null){
-				return tree.left;
+				if(tree.count > 1){
+					tree.elts.remove(0);
+					//Decrement count
+					tree.count--;
+					return tree;
+				}else{
+					return tree.left;
+				}
             }else{
-                return rebalance(new AVL(tree.elt, tree.left, deleteMax(tree.right)));
+                return rebalance(new AVL(tree.elts, tree.left, deleteMax(tree.right)));
             }
         }else{
             return null;
@@ -63,7 +86,7 @@ public class AVL {
     public static Tree max(AVL tree){
         if(tree != null){
             if(tree.right == null){
-                return tree.elt;
+                return tree.elts.get(0);
             }else{
                 return max(tree.right);
             }
@@ -135,7 +158,7 @@ public class AVL {
 	public static void PrintAVL(AVL tree){
 		if(tree!=null){
 			PrintAVL(tree.left);
-			System.out.println("Valeur" + tree.elt+" Balance :"+tree.bal);
+			System.out.println("Valeur" + tree.key+" Balance :"+tree.bal);
 			PrintAVL(tree.right);
 		}
 	}
