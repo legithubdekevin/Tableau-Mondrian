@@ -34,11 +34,14 @@ Pour exécuter la nouvelle stratégie on ajoutera les paramètres
 Génération d'un arbre de 400 feuilles
 
  > java Main 400 0.3 5 0.5 2
+ ![400 feuilles](/examples/example1.png)
 
 Génération d'un arbre avec la nouvelle stratégie (1) le point de distorsion étant en (700, 500)
 
  > java Main 150 0.5 1 0.5 4 700 500 1
+ ![stratégie 1](/examples/example2.png)
 
 Génération d'un arbre avec la nouvelle stratégie (2) le point de distorsion étant en (700, 500)
 
  > java Main 35 0.5 1 0.3 4 700 500 2
+ ![stratégie 2](/examples/example3.png)
